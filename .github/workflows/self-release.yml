@@ -50,17 +50,8 @@ jobs:
     - name: Build Fabric
       run: ./gradlew Fabric:build
 
-    - name: Create release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        tag_name: ${{ github.sha }}
-        release_name: Release ${{ github.sha }}
-        body: "Automatic Dev Build Release."
-        draft: false
-        prerelease: true
     - uses: "marvinpinto/action-automatic-releases@latest"
+      name: Create Release
       with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           automatic_release_tag: ${{ github.sha }}
