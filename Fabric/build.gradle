@@ -1,9 +1,13 @@
 plugins {
     id 'fabric-loom' version '1.5-SNAPSHOT'
     id 'maven-publish'
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
 }
 
-group = project.maven_group
+group = 'net.kore'
+version = '0.0.3'
+
+build.dependsOn(shadowJar)
 
 repositories {
     // Add repositories to retrieve artifacts from in here.
@@ -16,28 +20,36 @@ repositories {
 
 dependencies {
     // To change the versions see the gradle.properties file
-    minecraft "com.mojang:minecraft:${project.minecraft_version}"
-    mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
-    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+    minecraft "com.mojang:minecraft:1.20.4"
+    mappings "net.fabricmc:yarn:1.20.4+build.3:v2"
+    modImplementation "net.fabricmc:fabric-loader:0.15.7"
 
     // Fabric API. This is technically optional, but you probably want it anyway.
-    modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+    modImplementation "net.fabricmc.fabric-api:fabric-api:0.96.3+1.20.5"
 
     implementation project(path: ':API')
     implementation "org.spongepowered:configurate-hocon:4.1.2"
     implementation 'com.google.code.gson:gson:2.10.1'
 }
 
+shadowJar {
+    archiveBaseName.set('Pronouns-Fabric')
+    archiveClassifier.set('')
+    archiveVersion.set(version)
+
+    exclude("com.mojang:minecraft:1.20.4", "net.fabricmc:yarn:1.20.4+build.3:v2", "net.fabricmc.fabric-api:fabric-api:0.96.3+1.20.5")
+}
+
 processResources {
     inputs.property "version", project.version
-    inputs.property "minecraft_version", project.minecraft_version
-    inputs.property "loader_version", project.loader_version
+    inputs.property "minecraft_version", '1.20.4'
+    inputs.property "loader_version", '0.15.7'
     filteringCharset "UTF-8"
 
     filesMatching("fabric.mod.json") {
         expand "version": project.version,
-                "minecraft_version": project.minecraft_version,
-                "loader_version": project.loader_version
+                "minecraft_version": '1.20.4',
+                "loader_version": '0.15.7'
     }
 }
 
@@ -58,7 +70,7 @@ java {
     if (JavaVersion.current() < javaVersion) {
         toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
     }
-    archivesBaseName = project.archives_base_name
+    archivesBaseName = 'Pronouns-Fabric-0.0.3'
     // Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
     // if it is present.
     // If you remove this line, sources will not be generated.

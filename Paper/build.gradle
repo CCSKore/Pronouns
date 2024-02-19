@@ -1,8 +1,16 @@
 plugins {
     id 'java'
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
 }
 
 group = 'net.kore'
+version = '0.0.3'
+
+shadowJar {
+    archiveBaseName.set('Pronouns-Paper')
+    archiveClassifier.set('')
+    archiveVersion.set(version)
+}
 
 repositories {
     mavenCentral()
