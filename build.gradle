@@ -10,6 +10,4 @@ repositories {
     mavenCentral()
 }
 
-dependencies {
-
-}
+dependencies {}

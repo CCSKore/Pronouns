@@ -16,26 +16,9 @@ dependencies {
     implementation "org.spongepowered:configurate-hocon:4.1.2"
 }
 
-publishing {
-    repositories {
-        maven {
-            name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/CCSKore/Pronouns")
-            credentials {
-                username = System.getenv("USERNAME")
-                password = System.getenv("TOKEN")
-            }
-        }
-    }
-    publications {
-        gpr(MavenPublication) {
-            artifact shadowJar
-        }
-    }
-}
-
 shadowJar {
     archiveBaseName.set('Pronouns-API')
     archiveClassifier.set('')
     archiveVersion.set(version)
+    destinationDirectory.set(new File(rootDir, "output"))
 }

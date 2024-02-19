@@ -7,8 +7,6 @@ plugins {
 group = 'net.kore'
 version = '0.0.3'
 
-build.dependsOn(shadowJar)
-
 repositories {
     // Add repositories to retrieve artifacts from in here.
     // You should only use this when depending on other mods because
@@ -81,6 +79,8 @@ jar {
     from("LICENSE") {
         rename { "${it}_${project.archivesBaseName}" }
     }
+
+    destinationDirectory.set(new File(rootDir, "output"))
 }
 
 // configure the maven publication

@@ -10,6 +10,7 @@ shadowJar {
     archiveBaseName.set('Pronouns-Sponge')
     archiveClassifier.set('')
     archiveVersion.set(version)
+    destinationDirectory.set(new File(rootDir, "output"))
 }
 
 repositories {
