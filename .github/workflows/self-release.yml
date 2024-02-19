@@ -28,6 +28,10 @@ jobs:
         server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
         settings-path: ${{ github.workspace }} # location for the settings.xml file
 
+    - name: Add SHORT_SHA env property with commit short sha
+      run: echo "SHORT_SHA=`echo ${GITHUB_SHA} | cut -c1-8`" >> $GITHUB_ENV
+
+
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@v3 # v3.1.0
       with:
@@ -52,8 +56,8 @@ jobs:
       name: Create Release
       with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: ${{ github.sha }}
+          automatic_release_tag: ${SHORT_SHA}
           prerelease: true
-          title: Release ${{ github.sha }}
+          title: Release ${SHORT_SHA}
           files: |
             output/*.jar
