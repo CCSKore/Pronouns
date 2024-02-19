@@ -44,11 +44,11 @@ jobs:
       run: chmod +x gradlew
 
     - name: Build API
-      run: ./gradlew API:build
+      run: ./gradlew API:shadowJar
     - name: Build Paper
-      run: ./gradlew Paper:build
+      run: ./gradlew Paper:shadowJar
     - name: Build Sponge
-      run: ./gradlew Sponge:build
+      run: ./gradlew Sponge:shadowJar
     - name: Build Fabric
       run: ./gradlew Fabric:build
 
@@ -56,8 +56,8 @@ jobs:
       name: Create Release
       with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: ${SHORT_SHA}
+          automatic_release_tag: ${{ SHORT_SHA }}
           prerelease: true
-          title: Release ${SHORT_SHA}
+          title: Release ${{ SHORT_SHA }}
           files: |
             output/*.jar
