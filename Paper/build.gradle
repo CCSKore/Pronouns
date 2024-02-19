@@ -1,0 +1,28 @@
+plugins {
+    id 'java'
+}
+
+group = 'net.kore'
+
+repositories {
+    mavenCentral()
+    maven {
+        name = "papermc-repo"
+        url = "https://repo.papermc.io/repository/maven-public/"
+    }
+
+    maven {
+        url = "https://oss.sonatype.org/content/groups/public/"
+    }
+
+    maven {
+        url = "https://repo.extendedclip.com/content/repositories/placeholderapi/"
+    }
+}
+
+dependencies {
+    implementation project(path: ':API')
+    compileOnly "io.papermc.paper:paper-api:1.20.1-R0.1-SNAPSHOT"
+    compileOnly "me.clip:placeholderapi:2.11.5"
+    implementation "org.spongepowered:configurate-hocon:4.1.2"
+}

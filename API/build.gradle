@@ -1,0 +1,14 @@
+plugins {
+    id 'java'
+}
+
+group = 'net.kore'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'com.google.code.gson:gson:2.10.1'
+    implementation "org.spongepowered:configurate-hocon:4.1.2"
+}

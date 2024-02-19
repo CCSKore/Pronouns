@@ -1,0 +1,25 @@
+{
+	"schemaVersion": 1,
+	"id": "kore_pronouns",
+	"version": "${version}",
+	"name": "Pronouns",
+	"description": "",
+	"authors": [],
+	"contact": {},
+	"license": "All-Rights-Reserved",
+	"icon": "assets/kore_pronouns/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"server": [
+			"net.kore.pronouns.fabric.FabricPronouns"
+		]
+	},
+	"mixins": [
+		"kore_pronouns.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=${loader_version}",
+		"fabric": "*",
+		"minecraft": "${minecraft_version}"
+	}
+}
