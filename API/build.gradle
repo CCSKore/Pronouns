@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id "maven-publish"
 }
 
 group = 'net.kore'
@@ -11,4 +12,22 @@ repositories {
 dependencies {
     implementation 'com.google.code.gson:gson:2.10.1'
     implementation "org.spongepowered:configurate-hocon:4.1.2"
+}
+
+publishing {
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/CCSKore/Pronouns")
+            credentials {
+                username = project.findProperty("gpr.user") ?: System.getenv("USERNAME")
+                password = project.findProperty("gpr.key") ?: System.getenv("TOKEN")
+            }
+        }
+    }
+    publications {
+        gpr(MavenPublication) {
+            from(components.java)
+        }
+    }
 }
