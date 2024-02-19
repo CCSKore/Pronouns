@@ -5,10 +5,12 @@
 # This workflow will build a package using Gradle and then publish it to GitHub packages when a release is created
 # For more information see: https://github.com/actions/setup-java/blob/main/docs/advanced-usage.md#Publishing-using-gradle
 
-name: Gradle Package
+name: Publish to Releases
 
 on:
-  workflow_dispatch
+  push:
+    branches:
+      - master
 
 jobs:
   build:
@@ -39,13 +41,16 @@ jobs:
     - name: Make gradlew executible
       run: chmod +x gradlew
 
-    - name: Build with Gradle
+    - name: Build API
       run: ./gradlew API:build
+    - name: Build Paper
+      run: ./gradlew Paper:build
+    - name: Build Sponge
+      run: ./gradlew Sponge:build
+    - name: Build Fabric
+      run: ./gradlew Fabric:build
 
-    # The USERNAME and TOKEN need to correspond to the credentials environment variables used in
-    # the publishing section of your build.gradle
     - name: Create release
-      id: create_release
       uses: actions/create-release@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -55,3 +60,11 @@ jobs:
         body: "Automatic Dev Build Release."
         draft: false
         prerelease: true
+    - uses: "marvinpinto/action-automatic-releases@latest"
+      with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: ${{ github.sha }}
+          prerelease: true
+          title: Release ${{ github.sha }}
+          files: |
+            output/*.jar
