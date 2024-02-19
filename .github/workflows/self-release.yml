@@ -15,10 +15,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
-      deployments: write
+    permissions: write-all
+
 
     steps:
     - uses: actions/checkout@v4
