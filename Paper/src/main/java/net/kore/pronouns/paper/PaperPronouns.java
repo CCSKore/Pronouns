@@ -34,25 +34,8 @@ public class PaperPronouns extends JavaPlugin implements Listener {
         }
 
         File configFile = new File(configFolder, "config.conf");
-
         if (!configFile.exists()) {
-            InputStream is = getResource("config.conf");
-            if (is != null) {
-                OutputStream outStream = null;
-                try {
-                    byte[] buffer = is.readAllBytes();
-                    outStream = new FileOutputStream(configFile);
-                    outStream.write(buffer);
-                } catch (IOException e) {
-                    LOGGER.severe("Unable to write default config file.");
-                } finally {
-                    try {
-                        if (outStream != null) outStream.close();
-                    } catch (IOException ignored) {}
-                }
-            } else {
-                LOGGER.severe("Unable to write default config file.");
-            }
+            saveResource("config.conf", false);
         }
 
         HoconConfigurationLoader loader = HoconConfigurationLoader.builder()

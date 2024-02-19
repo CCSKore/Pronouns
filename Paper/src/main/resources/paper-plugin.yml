@@ -1,0 +1,10 @@
+name: Pronouns
+version: '0.0.2'
+main: net.kore.pronouns.paper.PaperPronouns
+api-version: '1.20'
+
+dependencies:
+  server:
+    PlaceholderAPI:
+      load: BEFORE
+      required: false
