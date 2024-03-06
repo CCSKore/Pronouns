@@ -23,10 +23,7 @@ public class PaperPronouns extends JavaPlugin implements Listener {
     @Override
     public void onEnable() {
         INSTANCE = this;
-        if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) new PAPI().register();
         LOGGER = getLogger();
-
-        PaperPronounsAPI.get();
 
         File configFolder = getDataFolder();
         if (!configFolder.exists()) {
@@ -47,6 +44,9 @@ public class PaperPronouns extends JavaPlugin implements Listener {
         } catch (ConfigurateException e) {
             throw new RuntimeException(e);
         }
+
+        if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) new PAPI().register();
+        PaperPronounsAPI.get();
     }
 
     @Override
