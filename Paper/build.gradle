@@ -40,27 +40,14 @@ dependencies {
 hangarPublish {
     publications.register("plugin") {
         version.set(project.version as String)
-        channel.set("Snapshot") // We're using the 'Snapshot' channel
-        // TODO: Edit the project name to match your Hangar project
+        channel.set("Snapshot")
         id.set("Pronouns")
         apiKey.set(System.getenv("HANGAR_API_TOKEN"))
         platforms {
-            // TODO: Use the correct platform(s) for your plugin
             register(Platforms.PAPER) {
-                // TODO: If you're using ShadowJar, replace the jar lines with the appropriate task:
-                //   jar.set(tasks.shadowJar.flatMap { it.archiveFile })
-                // Set the jar file to upload
                 jar.set(tasks.shadowJar.flatMap { it.archiveFile })
-
-                // Set platform versions from gradle.properties file
-                val versions: List<String> = ("1.20.x" as String)
-                        .split(",")
-                        .map { it.trim() }
-                platformVersions.set(versions)
-
-                // TODO: Configure your plugin dependencies, if any
+                platformVersions.set("1.20.x")
                 dependencies {
-                    // Example for a dependency found on Hangar
                     hangar("PlaceholderAPI") {
                         required.set(false)
                     }
