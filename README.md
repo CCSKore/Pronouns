@@ -29,3 +29,52 @@ Planned, just not now, I haven't had the time yet.
 Bungeecord/Waterfall support?
 Probably not, not worth the hassle for the few people that may benefit from this. Again, feel free to fork and add, maybe make a PR and I'll consider adding it lol.
 
+You can use the PlaceholderAPI to get the normal or short version of your pronouns<br>
+Example:<br>
+`%pronouns_get%` = `He/They/It`<br>
+`%pronouns_getshort%` = `He/They`
+
+You can also use the `PronounsAPI` class in your own plugin :)<br>
+Example (Bukkit):
+
+```java
+public class MyPlugin extends JavaPlugin {
+    @Override
+    public void onEnable() {
+        String personsPronouns = PronounsAPI.getInstance().getPronouns(null); //TODO: Put a functional UUID in, null won't work!
+        getLogger().info(personsPronouns);
+    }
+
+    @Override
+    public void onDisable() {
+        // Plugin shutdown logic
+    }
+}
+```
+
+Example (Sponge):
+
+```java
+@Plugin("myplugin")
+public class MyPlugin {
+    @Inject
+    public Logger logger;
+
+    @Listener
+    public void onServerStart(final StartedEngineEvent<Server> event) {
+        String personsPronouns = PronounsAPI.getInstance().getPronouns(null); //TODO: Put a functional UUID in, null won't work!
+        logger.info(personsPronouns);
+    }
+}
+```
+
+Example (Fabric):
+```java
+public class MyMod implements DedicatedServerModInitializer {
+    @Override
+    public void onInitializeServer() {
+        String personsPronouns = PronounsAPI.getInstance().getPronouns(null); //TODO: Put a functional UUID in, null won't work!
+        logger.info(personsPronouns);
+    }
+}
+```
