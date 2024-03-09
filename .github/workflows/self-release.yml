@@ -43,6 +43,11 @@ jobs:
     - name: Make gradlew executible
       run: chmod +x gradlew
 
+    - name: Publish to Hangar
+      env:
+        HANGAR_TOKEN: ${{ secrets.HANGAR_API_TOKEN }}
+      run: ./gradlew Paper:shadowJar publishPluginPublicationToHangar --stacktrace
+
     - name: Build API
       run: ./gradlew API:shadowJar
     - name: Build Paper
