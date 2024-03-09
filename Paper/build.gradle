@@ -39,19 +39,14 @@ dependencies {
 
 hangarPublish {
     publications.register("plugin") {
-        version.set(project.version as String)
+        version = project.version
         channel.set("Snapshot")
         id.set("Pronouns")
         apiKey.set(System.getenv("HANGAR_API_TOKEN"))
         platforms {
-            register(Platforms.PAPER) {
-                jar.set(tasks.shadowJar.flatMap { it.archiveFile })
-                platformVersions.set("1.20.x")
-                dependencies {
-                    hangar("PlaceholderAPI") {
-                        required.set(false)
-                    }
-                }
+            paper {
+                jar = tasks.shadowJar.archiveFile
+                platformVersions = ["1.20.x"]
             }
         }
     }
