@@ -1,6 +1,7 @@
 plugins {
     id 'java'
     id 'com.github.johnrengelman.shadow' version '8.1.1'
+    id "io.papermc.hangar-publish-plugin" version "0.1.0"
 }
 
 group = 'net.kore'
@@ -34,4 +35,37 @@ dependencies {
     compileOnly "io.papermc.paper:paper-api:1.20.1-R0.1-SNAPSHOT"
     compileOnly "me.clip:placeholderapi:2.11.5"
     implementation "org.spongepowered:configurate-hocon:4.1.2"
+}
+
+hangarPublish {
+    publications.register("plugin") {
+        version.set(project.version as String)
+        channel.set("Snapshot") // We're using the 'Snapshot' channel
+        // TODO: Edit the project name to match your Hangar project
+        id.set("Pronouns")
+        apiKey.set(System.getenv("HANGAR_API_TOKEN"))
+        platforms {
+            // TODO: Use the correct platform(s) for your plugin
+            register(Platforms.PAPER) {
+                // TODO: If you're using ShadowJar, replace the jar lines with the appropriate task:
+                //   jar.set(tasks.shadowJar.flatMap { it.archiveFile })
+                // Set the jar file to upload
+                jar.set(tasks.shadowJar.flatMap { it.archiveFile })
+
+                // Set platform versions from gradle.properties file
+                val versions: List<String> = ("1.20.x" as String)
+                        .split(",")
+                        .map { it.trim() }
+                platformVersions.set(versions)
+
+                // TODO: Configure your plugin dependencies, if any
+                dependencies {
+                    // Example for a dependency found on Hangar
+                    hangar("PlaceholderAPI") {
+                        required.set(false)
+                    }
+                }
+            }
+        }
+    }
 }
