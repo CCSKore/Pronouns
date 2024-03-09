@@ -1,6 +1,7 @@
 package net.kore.pronouns.paper;
 
 import net.kore.pronouns.api.PronounsConfig;
+import net.kore.pronouns.api.PronounsLogger;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -44,6 +45,8 @@ public class PaperPronouns extends JavaPlugin implements Listener {
         } catch (ConfigurateException e) {
             throw new RuntimeException(e);
         }
+
+        PronounsLogger.setLogger(LOGGER);
 
         if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) new PAPI().register();
         PaperPronounsAPI.get();

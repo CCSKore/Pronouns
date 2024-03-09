@@ -6,6 +6,7 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
 import net.kore.pronouns.api.PronounsConfig;
+import net.kore.pronouns.api.PronounsLogger;
 import net.minecraft.server.MinecraftServer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -62,6 +63,8 @@ public class FabricPronouns implements DedicatedServerModInitializer {
         } catch (ConfigurateException e) {
             throw new RuntimeException(e);
         }
+
+        PronounsLogger.setLogger(LOGGER);
 
         FabricPronounsAPI.get();
     }

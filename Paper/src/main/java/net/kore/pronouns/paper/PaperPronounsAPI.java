@@ -4,6 +4,7 @@ import com.google.gson.*;
 import net.kore.pronouns.api.CachedPronouns;
 import net.kore.pronouns.api.PronounsAPI;
 import net.kore.pronouns.api.PronounsConfig;
+import net.kore.pronouns.api.PronounsLogger;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -18,7 +19,7 @@ import java.util.*;
 public class PaperPronounsAPI extends PronounsAPI {
     private PaperPronounsAPI() {
         Bukkit.getScheduler().runTaskTimerAsynchronously(PaperPronouns.getInstance(), () -> {
-            PaperPronouns.getLog().info("Refreshing cache...");
+            PronounsLogger.debug("Refreshing cache...");
             cache.clear();
             for (Player player : Bukkit.getOnlinePlayers()) {
                 getPronouns(player.getUniqueId());
@@ -109,7 +110,7 @@ public class PaperPronounsAPI extends PronounsAPI {
         }
 
         if (cache.size() == PronounsConfig.get().node("max-cache").getLong()) {
-            PaperPronouns.getLog().info("Cache has hit max, now flooding cache to prevent max cache hit.");
+            PronounsLogger.debug("Cache has hit max, now flooding cache to prevent max cache hit.");
             cache.clear();
         }
         cache.add(new CachedPronouns(uuid, ja, Instant.now().toEpochMilli()));

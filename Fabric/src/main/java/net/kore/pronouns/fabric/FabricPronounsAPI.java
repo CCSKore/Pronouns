@@ -10,6 +10,7 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.kore.pronouns.api.CachedPronouns;
 import net.kore.pronouns.api.PronounsAPI;
 import net.kore.pronouns.api.PronounsConfig;
+import net.kore.pronouns.api.PronounsLogger;
 import net.minecraft.server.network.ServerPlayerEntity;
 
 import java.io.BufferedReader;
@@ -32,7 +33,7 @@ public class FabricPronounsAPI extends PronounsAPI {
             t.set(t.get() - 1);
 
             if (t.get() <= 0) {
-                FabricPronouns.getLogger().info("Refreshing cache...");
+                PronounsLogger.debug("Refreshing cache...");
                 cache.clear();
                 for (ServerPlayerEntity player : world.getServer().getPlayerManager().getPlayerList()) {
                     getPronouns(player.getUuid());
@@ -124,7 +125,7 @@ public class FabricPronounsAPI extends PronounsAPI {
             ja.add(formatPlayer(je.getAsString(), FabricPronouns.getServerInstance().getPlayerManager().getPlayer(uuid).getName().getString()));
         }
         if (cache.size() == PronounsConfig.get().node("max-cache").getLong()) {
-            FabricPronouns.getLogger().info("Cache has hit max, now flooding cache to prevent max cache hit.");
+            PronounsLogger.debug("Cache has hit max, now flooding cache to prevent max cache hit.");
             cache.clear();
         }
         cache.add(new CachedPronouns(uuid, ja, Instant.now().toEpochMilli()));

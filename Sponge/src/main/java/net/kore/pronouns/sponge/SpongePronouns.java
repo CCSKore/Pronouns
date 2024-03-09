@@ -3,6 +3,9 @@ package net.kore.pronouns.sponge;
 import com.google.inject.Inject;
 import java.io.File;
 import java.nio.file.Path;
+
+import net.kore.pronouns.api.PronounsConfig;
+import net.kore.pronouns.api.PronounsLogger;
 import org.apache.logging.log4j.Logger;
 import org.spongepowered.api.Game;
 import org.spongepowered.api.Server;
@@ -28,7 +31,6 @@ public class SpongePronouns {
             sharedRoot = false
     )
     private Path configDir;
-    private static CommentedConfigurationNode node;
 
     public SpongePronouns() {
     }
@@ -45,19 +47,17 @@ public class SpongePronouns {
         return game.server();
     }
 
-    public static CommentedConfigurationNode getNode() {
-        return node;
-    }
-
     @Listener
     public void onServerStart(StartedEngineEvent<Server> event) {
-        HoconConfigurationLoader loader = ((HoconConfigurationLoader.Builder)HoconConfigurationLoader.builder().file(new File(this.configDir.toFile(), "config.conf"))).build();
+        HoconConfigurationLoader loader = HoconConfigurationLoader.builder().file(new File(this.configDir.toFile(), "config.conf")).build();
 
         try {
-            node = (CommentedConfigurationNode)loader.load();
+            PronounsConfig.set(loader.load());
         } catch (ConfigurateException var4) {
             throw new RuntimeException(var4);
         }
+
+        PronounsLogger.setLogger(logger);
 
         SpongePronounsAPI.get();
     }

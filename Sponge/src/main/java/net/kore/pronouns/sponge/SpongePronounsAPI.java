@@ -20,6 +20,7 @@ import java.util.concurrent.TimeUnit;
 import net.kore.pronouns.api.CachedPronouns;
 import net.kore.pronouns.api.PronounsAPI;
 import net.kore.pronouns.api.PronounsConfig;
+import net.kore.pronouns.api.PronounsLogger;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.entity.living.player.server.ServerPlayer;
 import org.spongepowered.api.scheduler.Task;
@@ -32,13 +33,13 @@ public class SpongePronounsAPI extends PronounsAPI {
     private SpongePronounsAPI() {
         Task.Builder taskBuilder = Task.builder();
         taskBuilder.execute(() -> {
-            SpongePronouns.getLogger().info("Refreshing cache...");
+            PronounsLogger.debug("Refreshing cache...");
             cache.clear();
             for (ServerPlayer serverPlayer : SpongePronouns.getServer().onlinePlayers()) {
                 this.getPronouns(serverPlayer.uniqueId());
             }
 
-        }).delay(0L, TimeUnit.MICROSECONDS).interval(Ticks.of(6000L)).plugin(SpongePronouns.getPluginContainer()).build();
+        }).delay(0L, TimeUnit.MICROSECONDS).interval(Ticks.of(PronounsConfig.get().node("refresh").getLong(5) * 60 * 20)).plugin(SpongePronouns.getPluginContainer()).build();
     }
 
     public static SpongePronounsAPI get() {
@@ -122,7 +123,7 @@ public class SpongePronounsAPI extends PronounsAPI {
             ja.add(formatPlayer(je.getAsString(), Sponge.server().player(uuid).get().name()));
         }
         if (cache.size() == PronounsConfig.get().node("max-cache").getLong()) {
-            SpongePronouns.getLogger().info("Cache has hit max, now flooding cache to prevent max cache hit.");
+            PronounsLogger.debug("Cache has hit max, now flooding cache to prevent max cache hit.");
             cache.clear();
         }
         cache.add(new CachedPronouns(uuid, ja, Instant.now().toEpochMilli()));

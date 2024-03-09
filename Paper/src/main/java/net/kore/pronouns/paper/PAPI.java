@@ -1,6 +1,7 @@
 package net.kore.pronouns.paper;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
+import net.kore.pronouns.api.PronounsAPI;
 import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
 
@@ -39,7 +40,7 @@ public class PAPI extends PlaceholderExpansion {
 
     @Override
     public String onRequest(OfflinePlayer player, @NotNull String param) {
-        PaperPronounsAPI API = PaperPronounsAPI.get();
+        PronounsAPI API = PronounsAPI.getInstance();
 
         String s = switch (param) {
             case "get" -> API.getPronouns(player.getUniqueId());

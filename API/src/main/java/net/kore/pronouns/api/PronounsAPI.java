@@ -5,6 +5,7 @@ import java.util.UUID;
 public abstract class PronounsAPI {
     private static PronounsAPI INSTANCE = null;
 
+    @SuppressWarnings("unused") // God damn you, it's an API!
     public static PronounsAPI getInstance() {
         return INSTANCE;
     }
