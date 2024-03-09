@@ -42,7 +42,7 @@ jobs:
 
     - name: Make gradlew executible
       run: chmod +x gradlew
-      
+
     - name: Build API
       run: ./gradlew API:shadowJar
     - name: Build Paper
