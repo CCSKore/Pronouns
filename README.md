@@ -78,3 +78,40 @@ public class MyMod implements DedicatedServerModInitializer {
     }
 }
 ```
+
+Example (Velocity):
+```java
+@Plugin(id="myplugin")
+public class MyPlugin {
+    @Inject
+    public Logger logger;
+
+    @Subscribe
+    public void onProxyInitialization(ProxyInitializeEvent event) {
+        String personsPronouns = PronounsAPI.getInstance().getPronouns(null); //TODO: Put a functional UUID in, null won't work!
+        logger.info(personsPronouns);
+    }
+}
+```
+
+Example (Bungee):
+```java
+public class MyPlugin extends Plugin {
+    @Override
+    public void onEnable() {
+        String personsPronouns = PronounsAPI.getInstance().getPronouns(null); //TODO: Put a functional UUID in, null won't work!
+        getLogger().info(personsPronouns);
+    }
+}
+```
+
+Example (Minestom):
+```java
+public class MyPlugin extends Extension {
+    @Override
+    public void initialize() {
+        String personsPronouns = PronounsAPI.getInstance().getPronouns(null); //TODO: Put a functional UUID in, null won't work!
+        getLogger().info(Component.text(personsPronouns));
+    }
+}
+```
