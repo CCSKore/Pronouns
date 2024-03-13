@@ -13,3 +13,7 @@ include 'API'
 include 'Paper'
 include 'Sponge'
 include 'Fabric'
+include 'Velocity'
+include 'Bungee'
+include 'Minestom'
+

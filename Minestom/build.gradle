@@ -12,7 +12,7 @@ group = config.group as String
 version = config.version as String
 
 shadowJar {
-    archiveBaseName.set('Pronouns-Sponge')
+    archiveBaseName.set('Pronouns-Minestom-Extension')
     archiveClassifier.set('')
     archiveVersion.set(version)
     destinationDirectory.set(new File(rootDir, "output"))
@@ -20,14 +20,11 @@ shadowJar {
 
 repositories {
     mavenCentral()
-
-    maven {
-        url = "https://repo.spongepowered.org/repository/maven-public/"
-    }
+    maven { url 'https://jitpack.io' }
 }
 
 dependencies {
     implementation project(path: ':API')
-    implementation 'com.google.code.gson:gson:2.10.1'
-    compileOnly "org.spongepowered:spongeapi:8.0.0"
+    implementation "org.spongepowered:configurate-hocon:4.1.2"
+    compileOnly "com.github.minestom.minestom:Minestom:2cdb3911b0"
 }

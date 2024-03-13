@@ -23,6 +23,7 @@ public abstract class PronounsAPI {
     abstract public String getReflexive(UUID uuid);
 
     public String formatPlayer(String input, String name) {
+        if (name == null) name = "null";
         return input.replace("${player}", name);
     }
 }

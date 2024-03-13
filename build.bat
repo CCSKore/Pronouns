@@ -1,1 +1,1 @@
-gradlew API:shadowJar && gradlew Paper:shadowJar && gradlew Sponge:shadowJar && gradlew Fabric:build
+gradlew API:shadowJar Paper:shadowJar Sponge:shadowJar Fabric:build Velocity:shadowJar Bungee:shadowJar

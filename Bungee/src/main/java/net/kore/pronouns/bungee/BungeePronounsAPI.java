@@ -1,17 +1,14 @@
-package net.kore.pronouns.fabric;
+package net.kore.pronouns.bungee;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.fabricmc.loader.api.FabricLoader;
 import net.kore.pronouns.api.CachedPronouns;
 import net.kore.pronouns.api.PronounsAPI;
 import net.kore.pronouns.api.PronounsConfig;
 import net.kore.pronouns.api.PronounsLogger;
-import net.minecraft.server.network.ServerPlayerEntity;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -22,32 +19,24 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.concurrent.atomic.AtomicReference;
+import java.util.concurrent.TimeUnit;
 
-public class FabricPronounsAPI extends PronounsAPI {
-    private FabricPronounsAPI() {
-        AtomicReference<Float> ticks = new AtomicReference<>(PronounsConfig.get().node("refresh").getFloat(5) * 60 * 20);
-        AtomicReference<Float> t = new AtomicReference<>(ticks.get());
-
-        ServerTickEvents.START_WORLD_TICK.register((world) -> {
-            t.set(t.get() - 1);
-
-            if (t.get() <= 0) {
-                PronounsLogger.debug("Refreshing cache...");
-                cache.clear();
-                for (ServerPlayerEntity player : world.getServer().getPlayerManager().getPlayerList()) {
-                    getPronouns(player.getUuid());
-                }
-                t.set(ticks.get());
+public class BungeePronounsAPI extends PronounsAPI {
+    private BungeePronounsAPI() {
+        BungeePronouns.getInstance().getProxy().getScheduler().schedule(BungeePronouns.getInstance(), () -> {
+            PronounsLogger.debug("Refreshing cache...");
+            cache.clear();
+            for (ProxiedPlayer player : BungeePronouns.getInstance().getProxy().getPlayers()) {
+                getPronouns(player.getUniqueId());
             }
-        });
+        }, 0L, PronounsConfig.get().node("refresh").getLong(5), TimeUnit.MINUTES);
     }
-    private static FabricPronounsAPI INSTANCE;
+    private static BungeePronounsAPI INSTANCE;
     private static final List<CachedPronouns> cache = new ArrayList<>();
 
-    public static FabricPronounsAPI get() {
+    public static BungeePronounsAPI get() {
         if (INSTANCE == null) {
-            INSTANCE = new FabricPronounsAPI();
+            INSTANCE = new BungeePronounsAPI();
             PronounsAPI.setInstance(INSTANCE);
         }
         return INSTANCE;
@@ -121,8 +110,9 @@ public class FabricPronounsAPI extends PronounsAPI {
         }
         JsonArray ja = new JsonArray();
         for (JsonElement je : jo.get(uuid.toString()).getAsJsonObject().get("sets").getAsJsonObject().get("en").getAsJsonArray()) {
-            ja.add(formatPlayer(je.getAsString(), FabricPronouns.getServerInstance().getPlayerManager().getPlayer(uuid).getName().getString()));
+            ja.add(formatPlayer(je.getAsString(), BungeePronouns.getInstance().getProxy().getPlayer(uuid).getName()));
         }
+
         if (cache.size() == PronounsConfig.get().node("max-cache").getLong()) {
             PronounsLogger.debug("Cache has hit max, now flooding cache to prevent max cache hit.");
             cache.clear();

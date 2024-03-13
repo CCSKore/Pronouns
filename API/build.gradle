@@ -1,11 +1,16 @@
+import groovy.json.JsonSlurper
+
 plugins {
     id 'java'
     id "maven-publish"
     id 'com.github.johnrengelman.shadow' version '8.1.1'
 }
 
-group = 'net.kore'
-version = '0.1.0'
+def jsonSlurper = new JsonSlurper()
+def config = jsonSlurper.parse(new File(rootDir, 'config.json'))
+
+group = config.group as String
+version = config.version as String
 
 repositories {
     mavenCentral()
@@ -15,6 +20,8 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.10.1'
     implementation "org.spongepowered:configurate-hocon:4.1.2"
     implementation "org.apache.logging.log4j:log4j-api:2.17.0"
+    implementation 'org.slf4j:slf4j-api:2.0.12'
+    implementation "net.kyori:adventure-api:4.16.0"
 }
 
 shadowJar {

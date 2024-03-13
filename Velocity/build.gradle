@@ -12,7 +12,7 @@ group = config.group as String
 version = config.version as String
 
 shadowJar {
-    archiveBaseName.set('Pronouns-Sponge')
+    archiveBaseName.set('Pronouns-Velocity')
     archiveClassifier.set('')
     archiveVersion.set(version)
     destinationDirectory.set(new File(rootDir, "output"))
@@ -20,14 +20,18 @@ shadowJar {
 
 repositories {
     mavenCentral()
+    maven {
+        name = "papermc-repo"
+        url = "https://repo.papermc.io/repository/maven-public/"
+    }
 
     maven {
-        url = "https://repo.spongepowered.org/repository/maven-public/"
+        url = "https://oss.sonatype.org/content/groups/public/"
     }
 }
 
 dependencies {
     implementation project(path: ':API')
-    implementation 'com.google.code.gson:gson:2.10.1'
-    compileOnly "org.spongepowered:spongeapi:8.0.0"
+    compileOnly "com.velocitypowered:velocity-api:3.3.0-SNAPSHOT"
+    implementation "org.spongepowered:configurate-hocon:4.1.2"
 }

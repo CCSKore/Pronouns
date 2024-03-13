@@ -1,9 +1,14 @@
+import groovy.json.JsonSlurper
+
 plugins {
     id 'java'
 }
 
-group = 'net.kore'
-version = '0.0.4'
+def jsonSlurper = new JsonSlurper()
+def config = jsonSlurper.parse(new File(rootDir, 'config.json'))
+
+group = config.group as String
+version = config.version as String
 
 repositories {
     mavenCentral()

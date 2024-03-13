@@ -1,5 +1,5 @@
 name: Pronouns
-version: '0.1.0'
+version: '0.1.1'
 main: net.kore.pronouns.paper.PaperPronouns
 api-version: '1.20'
 

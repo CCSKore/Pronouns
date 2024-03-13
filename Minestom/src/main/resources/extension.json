@@ -1,0 +1,13 @@
+{
+	"entrypoint": "net.kore.pronouns.minestom.MinestomPronouns",
+	"name": "Pronouns",
+	"version": "0.1.1",
+	"externalDependencies": {
+		"repositories": [
+			{"name": "Central", "url": "https://repo1.maven.org/maven2/"}
+		],
+		"artifacts": [
+			"com.squareup:javapoet:1.13.0"
+		]
+	}
+}
