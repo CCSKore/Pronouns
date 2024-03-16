@@ -49,6 +49,9 @@ public class PAPI extends PlaceholderExpansion {
             case "get_personal2" -> API.getPersonal2(player.getUniqueId());
             case "get_possessive" -> API.getPossessive(player.getUniqueId());
             case "get_reflexive" -> API.getReflexive(player.getUniqueId());
+            case "get_decoration" -> API.getDecorationType(player.getUniqueId());
+            case "get_decoration_color" -> API.getDecorationTypeMMGradientColor(player.getUniqueId());
+            case "get_decoration_resource" -> API.getDecorationResourcePack(player.getUniqueId());
             default -> null;
         };
 

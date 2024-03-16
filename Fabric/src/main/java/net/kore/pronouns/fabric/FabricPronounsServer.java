@@ -1,7 +1,6 @@
 package net.kore.pronouns.fabric;
 
 import net.fabricmc.api.DedicatedServerModInitializer;
-import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
@@ -19,7 +18,7 @@ import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.Optional;
 
-public class FabricPronouns implements DedicatedServerModInitializer {
+public class FabricPronounsServer implements DedicatedServerModInitializer {
     private static final Logger LOGGER = LogManager.getLogger("Pronouns");
     public static Logger getLogger() {
         return LOGGER;

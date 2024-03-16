@@ -3,15 +3,18 @@
 	"id": "kore_pronouns",
 	"version": "0.1.1",
 	"name": "Pronouns",
-	"description": "",
-	"authors": [],
-	"contact": {},
-	"license": "All-Rights-Reserved",
-	"icon": "assets/kore_pronouns/icon.png",
+	"description": "PronounDB, in Minecraft!",
+	"authors": ["The Kore Team", "Nova"],
+	"contact": {
+		"issues": "https://github.com/CCSKore/Pronouns/issues",
+		"sources": "https://github.com/CCSKore/Pronouns"
+	},
+	"license": "Creative Commons Zero v1.0 Universal",
+	"icon": "assets/pronouns/icon.png",
 	"environment": "*",
 	"entrypoints": {
 		"server": [
-			"net.kore.pronouns.fabric.FabricPronouns"
+			"net.kore.pronouns.fabric.FabricPronounsServer"
 		]
 	},
 	"mixins": [
@@ -21,5 +24,16 @@
 		"fabricloader": ">=${loader_version}",
 		"fabric": "*",
 		"minecraft": "${minecraft_version}"
+	},
+	"custom": {
+		"modmenu": {
+			"links": {
+				"modmenu.discord": "https://discord.gg/vrxdXpeQ6a",
+				"modmenu.modrinth": "https://modrinth.com/plugin/kore-pronouns",
+				"modmenu.github_releases": "https://github.com/CCSKore/Pronouns/releases"
+			},
+			"badges": [ "library" ],
+			"update_checker": false
+		}
 	}
 }

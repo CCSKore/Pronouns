@@ -30,6 +30,15 @@ public class BungeePronouns extends Plugin {
             }
         }
 
+        File pathFile = new File(getDataFolder(), "Pronouns.zip");
+        if (!pathFile.exists() || !pathFile.isDirectory()) {
+            try {
+                Files.copy(Paths.get(Resources.getResource("Pronouns.zip").toURI()), pathFile.toPath());
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+
         HoconConfigurationLoader loader = HoconConfigurationLoader.builder()
                 .file(configFile)
                 .build();
