@@ -1,0 +1,33 @@
+{
+    "loader": {
+      "name": "java_plain",
+      "version": "1.0"
+    },
+    "license": "CC0-1.0",
+    "plugins": [
+      {
+        "id": "kore-pronouns",
+        "name": "Pronouns",
+        "version": "1.1.0-RC2",
+        "contributors": [
+          {
+            "name": "Contributors to Pronouns",
+            "description": "Everyone who has ever contributed in any capacity whatsoever"
+          }
+        ],
+        "dependencies": [
+          {
+            "id": "spongeapi",
+            "version": "11.0.0"
+          }
+        ],
+        "description": "PronounDB, in Minecraft!",
+        "links": {
+          "homepage": "https://github.com/CCSKore/Pronouns",
+          "source": "https://github.com/CCSKore/Pronouns",
+          "issues": "https://github.com/CCSKore/Pronouns/issues"
+        },
+        "entrypoint": "net.kore.pronouns.sponge.SpongePronouns"
+      }
+    ]
+  }

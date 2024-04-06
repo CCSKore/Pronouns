@@ -20,9 +20,6 @@ import java.util.Optional;
 
 public class FabricPronounsServer implements DedicatedServerModInitializer {
     private static final Logger LOGGER = LogManager.getLogger("Pronouns");
-    public static Logger getLogger() {
-        return LOGGER;
-    }
 
     private static MinecraftServer serverInstance;
     public static MinecraftServer getServerInstance() {
@@ -31,7 +28,7 @@ public class FabricPronounsServer implements DedicatedServerModInitializer {
 
     @Override
     public void onInitializeServer() {
-        ServerLifecycleEvents.SERVER_STARTING.register(server -> serverInstance = server);
+        serverInstance = getServerInstance();
         Path configFile = FabricLoader.getInstance().getConfigDir().resolve("config.conf");
 
         if (!configFile.toFile().exists()) {

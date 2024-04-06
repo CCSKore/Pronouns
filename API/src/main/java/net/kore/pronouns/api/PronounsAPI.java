@@ -162,17 +162,17 @@ public abstract class PronounsAPI {
         return formatPlayer(PronounsConfig.get().node(ja.get(0).getAsString(), "reflexive").getString("No pronoun defined for " + ja.get(0).getAsString() + "in config.conf"), getPlayerName(uuid));
     }
 
-    public String getDecorationType(UUID uuid) {
+    public PronounDecoration getDecorationType(UUID uuid) {
         JsonObject jo = getObj(uuid);
         if (jo == null || !jo.has(uuid.toString())) {
             return null;
         }
-        return jo.get(uuid.toString()).getAsJsonObject().get("decoration").getAsString();
+        return PronounDecoration.getFromID(jo.get(uuid.toString()).getAsJsonObject().get("decoration").getAsString());
     }
 
     public String getDecorationTypeMMGradientColor(UUID uuid) {
-        String type = getDecorationType(uuid);
-        return switch (type) {
+        PronounDecoration type = getDecorationType(uuid);
+        return switch (type.getId()) {
             case "pride" -> "<gradient:#F47C7C:#FFC268:#F7F48B:#A1DE93:#70A1D7:#957DAD>";
             case "pride_bi" -> "<gradient:#D872AC:#957DAD:#6AA9ED>";
             case "pride_pan" -> "<gradient:#FF82B1:#F7F48B:#8BD1F9>";
@@ -199,8 +199,8 @@ public abstract class PronounsAPI {
     }
 
     public String getDecorationResourcePack(UUID uuid) {
-        String type = getDecorationType(uuid);
-        return switch (type) {
+        PronounDecoration type = getDecorationType(uuid);
+        return switch (type.getId()) {
             case "pride" -> "<font:pronouns:decorations> </font>";
             case "pride_bi" -> "<font:pronouns:decorations>!</font>";
             case "pride_pan" -> "<font:pronouns:decorations>\"</font>";

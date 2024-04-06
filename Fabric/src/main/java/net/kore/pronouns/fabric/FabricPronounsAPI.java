@@ -7,12 +7,13 @@ import net.kore.pronouns.api.PronounsLogger;
 import net.minecraft.server.network.ServerPlayerEntity;
 
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class FabricPronounsAPI extends PronounsAPI {
     private FabricPronounsAPI() {
-        AtomicReference<Float> ticks = new AtomicReference<>(PronounsConfig.get().node("refresh").getFloat(5) * 60 * 20);
-        AtomicReference<Float> t = new AtomicReference<>(ticks.get());
+        AtomicInteger ticks = new AtomicInteger(PronounsConfig.get().node("refresh").getInt(5) * 60 * 20);
+        AtomicInteger t = new AtomicInteger(ticks.get());
 
         ServerTickEvents.START_WORLD_TICK.register((world) -> {
             t.set(t.get() - 1);

@@ -18,7 +18,6 @@ public class PaperPronouns extends JavaPlugin implements Listener {
     private static Logger LOGGER;
     private static PaperPronouns INSTANCE;
 
-    public static Logger getLog() {return LOGGER;}
     public static PaperPronouns getInstance() {return INSTANCE;}
 
     @Override

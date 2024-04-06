@@ -37,7 +37,7 @@ jobs:
       run: chmod +x gradlew
 
     - name: Build Modules
-      run: ./gradlew API:shadowJar Paper:shadowJar Sponge:shadowJar Fabric:build Velocity:shadowJar Bungee:shadowJar
+      run: ./gradlew API:shadowJar Paper:shadowJar Sponge:shadowJar Fabric:build Velocity:shadowJar Bungee:shadowJar Minestom:shadowJar NeoForge:shadowJar
 
     - uses: "marvinpinto/action-automatic-releases@latest"
       name: Create Release

@@ -1,11 +1,8 @@
 package net.kore.pronouns.api;
 
-import net.kyori.adventure.text.Component;
-
-import java.util.logging.Logger;
-
 public class PronounsLogger {
     private static Object LOGGER;
+
     public static void setLogger(Object l) { LOGGER = l; }
 
     public static void info(String info) {
@@ -13,7 +10,8 @@ public class PronounsLogger {
             LOGGER.getClass().getMethod("info", String.class).invoke(LOGGER, info);
         } catch (Throwable ee) {
             try {
-                LOGGER.getClass().getMethod("info", Component.class).invoke(LOGGER, Component.text(info));
+                Object c = Class.forName("net.kyori.adventure.text.Component").getMethod("text", String.class).invoke(null, info);
+                LOGGER.getClass().getMethod("info", Class.forName("net.kyori.adventure.text.Component")).invoke(LOGGER, c);
             } catch (Throwable e) {
                 throw new IllegalStateException("Logger couldn't be executed.", e);
             }
@@ -28,7 +26,8 @@ public class PronounsLogger {
                 LOGGER.getClass().getMethod("warn", String.class).invoke(LOGGER, info);
             } catch (Throwable ee) {
                 try {
-                    LOGGER.getClass().getMethod("warn", Component.class).invoke(LOGGER, Component.text(info));
+                    Object c = Class.forName("net.kyori.adventure.text.Component").getMethod("text", String.class).invoke(null, info);
+                    LOGGER.getClass().getMethod("warn", Class.forName("net.kyori.adventure.text.Component")).invoke(LOGGER, c);
                 } catch (Throwable e) {
                     throw new IllegalStateException("Logger couldn't be executed.", e);
                 }
@@ -44,7 +43,8 @@ public class PronounsLogger {
                 LOGGER.getClass().getMethod("error", String.class).invoke(LOGGER, info);
             } catch (Throwable ee) {
                 try {
-                    LOGGER.getClass().getMethod("error", Component.class).invoke(LOGGER, Component.text(info));
+                    Object c = Class.forName("net.kyori.adventure.text.Component").getMethod("text", String.class).invoke(null, info);
+                    LOGGER.getClass().getMethod("error", Class.forName("net.kyori.adventure.text.Component")).invoke(LOGGER, c);
                 } catch (Throwable e) {
                     throw new IllegalStateException("Logger couldn't be executed.", e);
                 }

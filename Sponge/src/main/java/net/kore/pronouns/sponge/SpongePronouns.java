@@ -2,17 +2,24 @@ package net.kore.pronouns.sponge;
 
 import com.google.inject.Inject;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Optional;
 
 import net.kore.pronouns.api.PronounsConfig;
 import net.kore.pronouns.api.PronounsLogger;
+import net.kyori.adventure.text.Component;
 import org.apache.logging.log4j.Logger;
 import org.spongepowered.api.Game;
 import org.spongepowered.api.Server;
 import org.spongepowered.api.config.ConfigDir;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.lifecycle.StartedEngineEvent;
-import org.spongepowered.configurate.CommentedConfigurationNode;
+import org.spongepowered.api.plugin.PluginManager;
 import org.spongepowered.configurate.ConfigurateException;
 import org.spongepowered.configurate.hocon.HoconConfigurationLoader;
 import org.spongepowered.plugin.PluginContainer;
@@ -20,23 +27,17 @@ import org.spongepowered.plugin.builtin.jvm.Plugin;
 
 @Plugin("pronouns")
 public class SpongePronouns {
-    @Inject
     private static Logger logger;
-    @Inject
     private static PluginContainer pluginContainer;
-    @Inject
     private static Game game;
+    private final Path configDir;
+
     @Inject
-    @ConfigDir(
-            sharedRoot = false
-    )
-    private Path configDir;
-
-    public SpongePronouns() {
-    }
-
-    public static Logger getLogger() {
-        return logger;
+    public SpongePronouns(PluginContainer plugin, Game game, Logger logger, @ConfigDir(sharedRoot = false) Path folder) {
+        SpongePronouns.pluginContainer = plugin;
+        SpongePronouns.game = game;
+        SpongePronouns.logger = logger;
+        this.configDir = folder;
     }
 
     public static PluginContainer getPluginContainer() {
@@ -49,12 +50,29 @@ public class SpongePronouns {
 
     @Listener
     public void onServerStart(StartedEngineEvent<Server> event) {
-        HoconConfigurationLoader loader = HoconConfigurationLoader.builder().file(new File(this.configDir.toFile(), "config.conf")).build();
+        File configFile = new File(this.configDir.toFile(), "config.conf");
+
+        if (!configFile.exists()) {
+            Optional<URI> ois = pluginContainer.locateResource(Path.of("config.conf").toUri());
+            if (ois.isEmpty()) {
+                logger.info("Couldn't find default config.");
+                game.server().shutdown(Component.text("Server stopping due to plugin issue. (default config is currently broken)"));
+                return;
+            }
+            URI u = ois.get();
+            try {
+                Files.copy(Paths.get(u), configFile.toPath());
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        HoconConfigurationLoader loader = HoconConfigurationLoader.builder().file(configFile).build();
 
         try {
             PronounsConfig.set(loader.load());
-        } catch (ConfigurateException var4) {
-            throw new RuntimeException(var4);
+        } catch (ConfigurateException e) {
+            throw new RuntimeException(e);
         }
 
         PronounsLogger.setLogger(logger);

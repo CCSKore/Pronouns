@@ -1,9 +1,14 @@
 pluginManagement {
     repositories {
+        mavenLocal()
         gradlePluginPortal()
         maven {
             name = 'Fabric'
             url = 'https://maven.fabricmc.net/'
+        }
+        maven {
+            name = 'NeoForge'
+            url = 'https://maven.neoforged.net/releases'
         }
     }
 }
@@ -16,4 +21,5 @@ include 'Fabric'
 include 'Velocity'
 include 'Bungee'
 include 'Minestom'
-
+include 'Library'
+include 'NeoForge'

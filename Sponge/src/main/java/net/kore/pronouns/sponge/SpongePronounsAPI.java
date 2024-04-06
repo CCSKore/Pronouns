@@ -22,7 +22,10 @@ public class SpongePronounsAPI extends PronounsAPI {
                 this.getPronouns(serverPlayer.uniqueId());
             }
 
-        }).delay(0L, TimeUnit.MICROSECONDS).interval(Ticks.of(PronounsConfig.get().node("refresh").getLong(5) * 60 * 20)).plugin(SpongePronouns.getPluginContainer()).build();
+        }).delay(0L, TimeUnit.MICROSECONDS)
+                .interval(Ticks.of(PronounsConfig.get().node("refresh").getLong(5) * 60 * 20))
+                .plugin(SpongePronouns.getPluginContainer())
+                .build();
     }
 
     public static SpongePronounsAPI get() {

@@ -2,6 +2,7 @@ name: Pronouns
 version: '0.1.1'
 main: net.kore.pronouns.paper.PaperPronouns
 api-version: '1.20'
+folia-supported: true
 
 dependencies:
   server:

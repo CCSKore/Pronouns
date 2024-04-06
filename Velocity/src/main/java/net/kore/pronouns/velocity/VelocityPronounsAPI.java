@@ -1,17 +1,10 @@
 package net.kore.pronouns.velocity;
 
-import com.google.gson.*;
 import com.velocitypowered.api.proxy.Player;
-import net.kore.pronouns.api.CachedPronouns;
 import net.kore.pronouns.api.PronounsAPI;
 import net.kore.pronouns.api.PronounsConfig;
 import net.kore.pronouns.api.PronounsLogger;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.time.Instant;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 

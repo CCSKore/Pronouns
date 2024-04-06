@@ -34,11 +34,6 @@ public class PAPI extends PlaceholderExpansion {
     }
 
     @Override
-    public @NotNull List<String> getPlaceholders() {
-        return List.of("%pronouns_get%", "%pronouns_getshort%", "pronouns_getlimit_<limit>");
-    }
-
-    @Override
     public String onRequest(OfflinePlayer player, @NotNull String param) {
         PronounsAPI API = PronounsAPI.getInstance();
 
@@ -49,7 +44,7 @@ public class PAPI extends PlaceholderExpansion {
             case "get_personal2" -> API.getPersonal2(player.getUniqueId());
             case "get_possessive" -> API.getPossessive(player.getUniqueId());
             case "get_reflexive" -> API.getReflexive(player.getUniqueId());
-            case "get_decoration" -> API.getDecorationType(player.getUniqueId());
+            case "get_decoration" -> API.getDecorationType(player.getUniqueId()).getId();
             case "get_decoration_color" -> API.getDecorationTypeMMGradientColor(player.getUniqueId());
             case "get_decoration_resource" -> API.getDecorationResourcePack(player.getUniqueId());
             default -> null;
