@@ -3,7 +3,6 @@ import groovy.json.JsonSlurper
 plugins {
     id 'java'
     id 'fabric-loom' version '1.5-SNAPSHOT' apply false
-    id 'net.neoforged.gradle.userdev' version '7.0.97' apply false
 }
 
 def jsonSlurper = new JsonSlurper()

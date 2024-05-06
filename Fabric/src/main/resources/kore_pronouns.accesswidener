@@ -1,0 +1,6 @@
+accessWidener v2 named
+
+accessible field net/minecraft/client/gui/screen/multiplayer/SocialInteractionsPlayerListEntry name Ljava/lang/String;
+mutable field net/minecraft/client/gui/screen/multiplayer/SocialInteractionsPlayerListEntry name Ljava/lang/String;
+accessible field net/minecraft/client/network/ClientPlayNetworkHandler playerListEntries Ljava/util/Map;
+mutable field net/minecraft/client/network/ClientPlayNetworkHandler playerListEntries Ljava/util/Map;

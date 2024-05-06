@@ -11,20 +11,33 @@ def config = jsonSlurper.parse(new File(rootDir, 'config.json'))
 group = config.group as String
 version = config.version as String
 
+configurations {
+    shadow.extendsFrom implementation {
+        canBeResolved = true
+    }
+}
+
 shadowJar {
     archiveBaseName.set('Pronouns-Minestom-Extension')
     archiveClassifier.set('')
     archiveVersion.set(version)
     destinationDirectory.set(new File(rootDir, "output"))
+    configurations = [project.configurations.shadow]
 }
 
 repositories {
     mavenCentral()
-    maven { url 'https://jitpack.io' }
+    maven {
+        url = 'https://jitpack.io'
+    }
+
+    maven {
+        url = "https://repo.panda-lang.org/releases"
+    }
 }
 
 dependencies {
-    implementation project(path: ':API')
-    implementation "org.spongepowered:configurate-hocon:4.1.2"
-    compileOnly "com.github.minestom.minestom:Minestom:2cdb3911b0"
+    shadow project(path: ':API')
+    shadow "org.spongepowered:configurate-hocon:4.1.2"
+    implementation 'net.minestom:minestom-snapshots:7320437640'
 }

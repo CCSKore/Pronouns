@@ -8,6 +8,8 @@ import net.minestom.server.entity.Player;
 import net.minestom.server.timer.ExecutionType;
 import net.minestom.server.timer.TaskSchedule;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class MinestomPronounsAPI extends PronounsAPI {
@@ -15,9 +17,11 @@ public class MinestomPronounsAPI extends PronounsAPI {
         MinecraftServer.getSchedulerManager().scheduleTask(() -> {
             PronounsLogger.debug("Refreshing cache...");
             flushCache();
+            List<UUID> uuids = new ArrayList<>();
             for (Player player : MinecraftServer.getConnectionManager().getOnlinePlayers()) {
-                getPronouns(player.getUuid());
+                uuids.add(player.getUuid());
             }
+            massCacheValues(uuids);
         }, TaskSchedule.nextTick(), TaskSchedule.minutes(PronounsConfig.get().node("refresh").getLong(5)), ExecutionType.ASYNC);
     }
     private static MinestomPronounsAPI INSTANCE;
@@ -32,6 +36,7 @@ public class MinestomPronounsAPI extends PronounsAPI {
 
     @Override
     public String getPlayerName(UUID uuid) {
-        return MinecraftServer.getConnectionManager().getPlayer(uuid).getUsername();
+        Player p = MinecraftServer.getConnectionManager().getPlayer(uuid);
+        return p == null ? null : p.getUsername();
     }
 }

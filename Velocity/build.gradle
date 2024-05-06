@@ -28,10 +28,15 @@ repositories {
     maven {
         url = "https://oss.sonatype.org/content/groups/public/"
     }
+
+    maven {
+        url = "https://repo.panda-lang.org/releases"
+    }
 }
 
 dependencies {
     implementation project(path: ':API')
     compileOnly "com.velocitypowered:velocity-api:3.3.0-SNAPSHOT"
     implementation "org.spongepowered:configurate-hocon:4.1.2"
+    implementation "dev.rollczi:litecommands-velocity:3.2.0"
 }

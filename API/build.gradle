@@ -19,6 +19,7 @@ repositories {
 dependencies {
     implementation 'com.google.code.gson:gson:2.10.1'
     implementation "org.spongepowered:configurate-hocon:4.1.2"
+    implementation "net.kyori:adventure-api:4.16.0"
 }
 
 shadowJar {

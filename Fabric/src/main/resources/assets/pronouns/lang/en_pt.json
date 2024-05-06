@@ -1,0 +1,6 @@
+{
+	"pronouns.command.no_players": "There be a mite too many players bein' provided, me hearties!",
+	"pronouns.command.too_many_players": "Arrr, thar be a shipload o' players been provided, aye!",
+	"pronouns.command.feedback": "%s 'as the pronouns %s",
+	"pronouns.command.wait": "Avast ye! Hold yer horses while we fetch them thar pronouns!"
+}

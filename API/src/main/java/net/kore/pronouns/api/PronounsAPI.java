@@ -6,32 +6,32 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.atomic.AtomicReference;
 
 public abstract class PronounsAPI {
-    private static PronounsAPI INSTANCE = null;
-    private static final List<CachedPronouns> cache = new ArrayList<>();
+    private static final AtomicReference<PronounsAPI> INSTANCE = new AtomicReference<>(null);
+    public static final List<CachedPronouns> cache = new CopyOnWriteArrayList<>();
     public static void flushCache() {
         cache.clear();
     }
 
     @SuppressWarnings("unused") // God damn you, it's an API!
     public static PronounsAPI getInstance() {
-        return INSTANCE;
+        return INSTANCE.get();
     }
 
     public static void setInstance(PronounsAPI i) {
-        INSTANCE = i;
+        INSTANCE.set(i);
     }
 
-    private String getPronounsFromJA(JsonArray ja, int limit) {
+    public String getPronounsFromJA(JsonArray ja, int limit) {
         List<String> ls = new ArrayList<>();
 
         for (JsonElement je : ja) {
@@ -50,28 +50,18 @@ public abstract class PronounsAPI {
         return p1+"/"+p2;
     }
 
-    private JsonObject getObj(UUID uuid) {
+    public JsonObject getObj(UUID uuid) {
         check();
         JsonObject jo = getCached(uuid);
         if (jo != null) {
-            return jo;
+            JsonObject realJo = JsonParser.parseString("{}").getAsJsonObject();
+            realJo.add(uuid.toString(), jo);
+            return realJo;
         }
         try {
+            PronounsLogger.debug("Sending request to PronounDB API");
             URL url = new URL("https://pronoundb.org/api/v2/lookup?platform=minecraft&ids="+uuid.toString());
-            HttpURLConnection con = (HttpURLConnection) url.openConnection();
-            con.setRequestMethod("GET");
-            con.setRequestProperty("Content-Type", "application/json");
-
-            BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-            String inputLine;
-            StringBuilder content = new StringBuilder();
-            while ((inputLine = in.readLine()) != null) {
-                content.append(inputLine);
-            }
-            in.close();
-            con.disconnect();
-
-            String response = content.toString();
+            final String response = getResponse(url);
 
             return JsonParser.parseString(response).getAsJsonObject();
         } catch (Exception e) {
@@ -80,19 +70,40 @@ public abstract class PronounsAPI {
         }
     }
 
-    private void check() {
+    private static String getResponse(URL url) throws IOException {
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setRequestMethod("GET");
+        con.setRequestProperty("Content-Type", "application/json");
+        con.setRequestProperty("x-pronoundb-source", "Pronouns Mod/Plugin (https://modrinth.com/plugin/kore-pronouns)");
+
+        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        StringBuilder content = new StringBuilder();
+        while ((inputLine = in.readLine()) != null) {
+            content.append(inputLine);
+        }
+        in.close();
+        con.disconnect();
+
+        return content.toString();
+    }
+
+    public void check() {
         cache.removeIf(cp -> Instant.now().toEpochMilli() - cp.timeCached() > 300000L);
     }
 
-    private JsonObject getCached(UUID uuid) {
+    public JsonObject getCached(UUID uuid) {
         Optional<CachedPronouns> ocp = cache.stream().filter(cp -> cp.uuid().equals(uuid)).findFirst();
         return ocp.map(CachedPronouns::data).orElse(null);
     }
 
-    private JsonArray getJsonArray(UUID uuid) {
+    public JsonArray getJsonArray(UUID uuid) {
         check();
         JsonObject jo = getObj(uuid);
         if (jo == null || !jo.has(uuid.toString())) {
+            if (cache.stream().noneMatch(cachedPronouns -> cachedPronouns.uuid().equals(uuid))) {
+                cache.add(new CachedPronouns(uuid, null, Instant.now().toEpochMilli()));
+            }
             return null;
         }
 
@@ -102,24 +113,71 @@ public abstract class PronounsAPI {
             PronounsLogger.debug("Cache has hit max, now flooding cache to prevent max cache hit.");
             cache.clear();
         }
-        cache.add(new CachedPronouns(uuid, jo, Instant.now().toEpochMilli()));
+        if (cache.stream().noneMatch(cachedPronouns -> cachedPronouns.uuid().equals(uuid))) {
+            cache.add(new CachedPronouns(uuid, jo.get(uuid.toString()).getAsJsonObject(), Instant.now().toEpochMilli()));
+        }
         return ja;
     }
 
+    public void massCacheValues(List<UUID> uuids) {
+        uuids = new ArrayList<>(uuids);
+        if (uuids.size() > 45) {
+            PronounUtils.partitionBasedOnSize(uuids, 45).forEach(this::massCacheValues);
+            return;
+        }
+        check();
+        uuids.removeIf(uuid -> getCached(uuid) != null);
+        List<String> suuids = uuids.stream()
+                .map(UUID::toString)
+                .toList();
+        if (!suuids.isEmpty()) {
+           new Thread(() -> {
+               try {
+                   PronounsLogger.debug("Sending request to PronounDB API");
+                   URL url = new URL("https://pronoundb.org/api/v2/lookup?platform=minecraft&ids=" + String.join(",", suuids));
+                   HttpURLConnection con = (HttpURLConnection) url.openConnection();
+                   con.setRequestMethod("GET");
+                   con.setRequestProperty("Content-Type", "application/json");
+                   con.setRequestProperty("x-pronoundb-source", "Pronouns Mod/Plugin (https://modrinth.com/plugin/kore-pronouns)");
 
+                   BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+                   String inputLine;
+                   StringBuilder content = new StringBuilder();
+                   while ((inputLine = in.readLine()) != null) {
+                       content.append(inputLine);
+                   }
+                   in.close();
+                   con.disconnect();
+
+                   String response = content.toString();
+
+                   JsonObject jo = JsonParser.parseString(response).getAsJsonObject();
+                   for (Map.Entry<String, JsonElement> mE : jo.entrySet()) {
+                       UUID currentUuid = UUID.fromString(mE.getKey());
+                       cache.add(new CachedPronouns(currentUuid, mE.getValue().getAsJsonObject(), Instant.now().toEpochMilli()));
+                   }
+               } catch (Exception e) {
+                   e.printStackTrace();
+               }
+           }).start();
+        }
+    }
 
     public String getPronounsLimit(UUID uuid, int limit) {
         JsonArray ja = getJsonArray(uuid);
         if (ja == null) {
             return PronounsConfig.get().node("no-pronouns").getString("\"no-pronouns\" is not defined in config.conf");
         }
+        PronounsLogger.debug(ja.toString());
         if (ja.size() == 1 || limit == 1) return getPronounFromShort(ja.get(0).getAsString());
 
         return getPronounsFromJA(ja, limit);
     }
 
     public String getPronouns(UUID uuid) {
-        return getPronounsLimit(uuid, 3);
+        String debugedItem = getPronounsLimit(uuid, 3);
+        PronounsLogger.debug(debugedItem);
+        return debugedItem;
     }
 
     public String getShortPronouns(UUID uuid) {
@@ -194,7 +252,7 @@ public abstract class PronounsAPI {
 
             case "catgirl_chief" -> "<gradient:#F49898:#F49898>";
 
-            default -> null;
+            default -> "<gradient:#FFFFFF:#FFFFFF>";
         };
     }
 

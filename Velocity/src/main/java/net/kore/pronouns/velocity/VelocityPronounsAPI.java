@@ -15,9 +15,11 @@ public class VelocityPronounsAPI extends PronounsAPI {
                 .buildTask(VelocityPronouns.getInstance(), () -> {
                     PronounsLogger.debug("Refreshing cache...");
                     flushCache();
+                    List<UUID> uuids = new ArrayList<>();
                     for (Player player : VelocityPronouns.getInstance().getServer().getAllPlayers()) {
-                        getPronouns(player.getUniqueId());
+                        uuids.add(player.getUniqueId());
                     }
+                    massCacheValues(uuids);
                 })
                 .repeat(PronounsConfig.get().node("refresh").getLong(5), TimeUnit.MINUTES)
                 .schedule();
@@ -34,6 +36,6 @@ public class VelocityPronounsAPI extends PronounsAPI {
 
     @Override
     public String getPlayerName(UUID uuid) {
-        return VelocityPronouns.getInstance().getServer().getPlayer(uuid).orElseGet(null).getUsername();
+        return VelocityPronouns.getInstance().getServer().getPlayer(uuid).map(Player::getUsername).orElse(null);
     }
 }

@@ -6,10 +6,6 @@ pluginManagement {
             name = 'Fabric'
             url = 'https://maven.fabricmc.net/'
         }
-        maven {
-            name = 'NeoForge'
-            url = 'https://maven.neoforged.net/releases'
-        }
     }
 }
 
@@ -19,7 +15,9 @@ include 'Paper'
 include 'Sponge'
 include 'Fabric'
 include 'Velocity'
-include 'Bungee'
+//include 'Bungee' //May you be forever immortilised here (i hated you)
 include 'Minestom'
-include 'Library'
-include 'NeoForge'
+//include 'Library' //Stupid idea, makes sense to be a platform specific thing
+//include 'NeoForge' //RIP, was annoying to maintain and NeoGradle is a pain in the ass
+include 'Meepling'
+

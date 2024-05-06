@@ -1,10 +1,11 @@
 {
 	"schemaVersion": 1,
 	"id": "kore_pronouns",
-	"version": "0.1.1",
+	"version": "0.2.0",
 	"name": "Pronouns",
 	"description": "PronounDB, in Minecraft!",
 	"authors": ["The Kore Team", "Nova"],
+	"accessWidener" : "kore_pronouns.accesswidener",
 	"contact": {
 		"issues": "https://github.com/CCSKore/Pronouns/issues",
 		"sources": "https://github.com/CCSKore/Pronouns"
@@ -14,8 +15,12 @@
 	"environment": "*",
 	"entrypoints": {
 		"server": [
-			"net.kore.pronouns.fabric.FabricPronounsServer"
-		]
+			"net.kore.pronouns.fabric.FabricPronouns"
+		],
+		"client": [
+			"net.kore.pronouns.fabric.FabricPronouns"
+		],
+		"modmenu": [ "net.kore.pronouns.fabric.client.PronounsModMenu" ]
 	},
 	"mixins": [
 		"kore_pronouns.mixins.json"
@@ -23,7 +28,8 @@
 	"depends": {
 		"fabricloader": ">=${loader_version}",
 		"fabric": "*",
-		"minecraft": "${minecraft_version}"
+		"minecraft": "${minecraft_version}",
+		"yet_another_config_lib_v3": "*"
 	},
 	"custom": {
 		"modmenu": {
@@ -32,7 +38,6 @@
 				"modmenu.modrinth": "https://modrinth.com/plugin/kore-pronouns",
 				"modmenu.github_releases": "https://github.com/CCSKore/Pronouns/releases"
 			},
-			"badges": [ "library" ],
 			"update_checker": false
 		}
 	}

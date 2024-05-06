@@ -19,6 +19,7 @@ import org.spongepowered.api.Server;
 import org.spongepowered.api.config.ConfigDir;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.lifecycle.StartedEngineEvent;
+import org.spongepowered.api.event.network.ServerSideConnectionEvent;
 import org.spongepowered.api.plugin.PluginManager;
 import org.spongepowered.configurate.ConfigurateException;
 import org.spongepowered.configurate.hocon.HoconConfigurationLoader;
@@ -56,7 +57,7 @@ public class SpongePronouns {
             Optional<URI> ois = pluginContainer.locateResource(Path.of("config.conf").toUri());
             if (ois.isEmpty()) {
                 logger.info("Couldn't find default config.");
-                game.server().shutdown(Component.text("Server stopping due to plugin issue. (default config is currently broken)"));
+                getServer().shutdown(Component.text("Server stopping due to plugin issue. (default config is currently broken)"));
                 return;
             }
             URI u = ois.get();
@@ -78,5 +79,10 @@ public class SpongePronouns {
         PronounsLogger.setLogger(logger);
 
         SpongePronounsAPI.get();
+    }
+
+    @Listener
+    public void onPlayerJoin(ServerSideConnectionEvent.Join e) {
+        SpongePronounsAPI.get().getPronouns(e.profile().uuid());
     }
 }

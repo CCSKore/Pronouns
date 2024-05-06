@@ -9,6 +9,8 @@ import net.kore.pronouns.api.PronounsLogger;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -37,9 +39,11 @@ public class PaperPronounsAPI extends PronounsAPI {
     private void handleRefresh(Object ignored) {
         PronounsLogger.debug("Refreshing cache...");
         flushCache();
+        List<UUID> uuids = new ArrayList<>();
         for (Player player : ImmutableList.copyOf(Bukkit.getOnlinePlayers())) {
-            getPronouns(player.getUniqueId());
+            uuids.add(player.getUniqueId());
         }
+        massCacheValues(uuids);
     }
 
     public static PronounsAPI get() {

@@ -1,0 +1,18 @@
+plugins {
+    id 'java'
+}
+
+group = 'net.kore'
+version = '0.2.0'
+
+repositories {
+    mavenCentral()
+    mavenLocal() //My Meep, not yours
+}
+
+dependencies {
+    compileOnly "net.kore.meep:API:1.0-SNAPSHOT"
+    implementation project(":API")
+    compileOnly "net.kyori:adventure-api:4.16.0" // Meep issue, Adventure needs to be compileOnly in the plugin for some reason
+    implementation "net.kyori:adventure-text-serializer-plain:4.16.0" // Also this needs adding to Meep
+}

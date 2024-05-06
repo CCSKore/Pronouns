@@ -1,8 +1,12 @@
 package net.kore.pronouns.paper;
 
+import dev.rollczi.litecommands.LiteCommands;
+import dev.rollczi.litecommands.bukkit.LiteCommandsBukkit;
 import net.kore.pronouns.api.PronounsConfig;
 import net.kore.pronouns.api.PronounsLogger;
+import net.kore.pronouns.paper.command.ReloadCommand;
 import org.bukkit.Bukkit;
+import org.bukkit.command.CommandSender;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -19,6 +23,8 @@ public class PaperPronouns extends JavaPlugin implements Listener {
     private static PaperPronouns INSTANCE;
 
     public static PaperPronouns getInstance() {return INSTANCE;}
+
+    private LiteCommands<CommandSender> liteCommands;
 
     @Override
     public void onEnable() {
@@ -49,6 +55,12 @@ public class PaperPronouns extends JavaPlugin implements Listener {
 
         if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) new PAPI().register();
         PaperPronounsAPI.get();
+
+        this.liteCommands = LiteCommandsBukkit.builder("pronouns", this)
+                .commands(
+                        new ReloadCommand()
+                )
+                .build();
     }
 
     @Override

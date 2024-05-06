@@ -1,0 +1,6 @@
+{
+	"pronouns.command.no_players": "No player was given",
+	"pronouns.command.too_many_players": "Too many players were provided",
+	"pronouns.command.feedback": "%s has the pronouns %s",
+	"pronouns.command.wait": "Please wait while the pronouns are fetched..."
+}

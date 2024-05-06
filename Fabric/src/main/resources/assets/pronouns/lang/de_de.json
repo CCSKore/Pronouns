@@ -1,0 +1,6 @@
+{
+	"pronouns.command.no_players": "Keinem Spieler wurde ein",
+	"pronouns.command.too_many_players": "Es wurden zu viele Spieler bereitgestellt",
+	"pronouns.command.feedback": "%s hat die Pronomen %s",
+	"pronouns.command.wait": "Bitte warten Sie, während die Pronomen abgerufen werden..."
+}
