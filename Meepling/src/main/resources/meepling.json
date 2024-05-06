@@ -1,0 +1,10 @@
+{
+	"name": "Pronouns",
+	"description": "PronounDB, in Minecraft!",
+	"main": "net.kore.pronouns.meepling.MeeplingPronouns",
+	"version": "0.2.0",
+
+	"meep": {
+		"version": "1.0-SNAPSHOT"
+	}
+}
