@@ -51,13 +51,3 @@ jobs:
           title: Developer ${{ env.SHORT_SHA }}
           files: |
             output/*.jar
-
-    - uses: "marvinpinto/action-automatic-releases@latest"
-      name: Create Latest Release
-      with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "latest"
-          prerelease: true
-          title: Developer ${{ env.SHORT_SHA }}
-          files: |
-            output/*.jar
