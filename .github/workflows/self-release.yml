@@ -43,7 +43,17 @@ jobs:
       run: ./build
 
     - name: Give them all a DEV name
-      run: 'for file in *.jar; do mv "$file" "DEV_$file"; done'
+      run: |
+        # Change directory to 'output'
+        cd output || { echo "Error: 'output' directory not found"; exit 1; }
+
+        # Bulk rename files ending with .jar
+        for file in *.jar; do
+            mv "$file" "DEV_$file"
+        done
+
+        # Change back to the previous directory
+        cd - || { echo "Error: Unable to change back to previous directory"; exit 1; }
 
     - uses: "marvinpinto/action-automatic-releases@latest"
       name: Create Specific Release
