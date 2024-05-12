@@ -1,0 +1,54 @@
+name: Bug report
+description: Create a report to help us improve
+assignees: "Novampr"
+labels: "bug"
+body:
+- type: markdown
+  attributes:
+    value: |
+      Thanks for making a bug report, please give as much information as possible and we can attempt to help :)
+- type: textarea
+  attributes:
+    label: Describe the bug
+    description: A clear and concise description of what the bug is.
+  validations:
+    required: true
+- type: textarea
+  attributes:
+    label: To Reproduce
+    description: Steps to reproduce this behaviour
+    placeholder: |
+      1. Go to '...'
+      2. Click on '...'
+      3. Scroll down to '...'
+      4. See error
+  validations:
+    required: true
+- type: textarea
+  attributes:
+    label: Expected behaviour
+    description: A clear and concise description of what you expected to happen.
+  validations:
+    required: true
+- type: textarea
+  attributes:
+    label: Screenshots / Videos
+    description: If applicable, add screenshots to help explain your problem.
+- type: textarea
+  attributes:
+    label: Server Version and Plugins
+    description: |
+      Give us the exact output from `/version` on all servers involved. Saying "latest" does not help us at all.
+      Please list all plugins on all servers involved.
+      If this bug occurs on a server you do not control, please fill this in to the best of your knowledge.
+- type: input
+  attributes:
+    label: Pronouns Version
+    description: What version of Pronouns are you running?
+    placeholder: "For example: 0.2.0 (latest is **not** a valid answer)"
+  validations:
+    required: true
+- type: textarea
+  attributes:
+    label: Additional Context
+    description: Add any other context about the problem here
