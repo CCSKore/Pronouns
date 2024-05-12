@@ -48,8 +48,8 @@ jobs:
         cd output || { echo "Error: 'output' directory not found"; exit 1; }
 
         # Bulk rename files ending with .jar
-        for file in *.jar; do
-            mv "$file" "DEV_$file"
+        for f in *.jar; do
+            mv -- "$f" "${f%.jar}_DEV.jar"
         done
 
         # Change back to the previous directory
