@@ -1,0 +1,22 @@
+name: Feature Request
+description: Want to suggest something? You've come to the right place
+assignees: "Novampr"
+body:
+- type: markdown
+  attributes:
+    value: |
+      Thanks for making a feature request, this helps us improve the plugin/mod
+- type: textarea
+  attributes:
+    label: Describe what you want adding or changing
+    description: A clear and concise description please
+  validations:
+    required: true
+- type: textarea
+  attributes:
+    label: Any example drawings/mock ups
+    description: If applicable, not required
+- type: textarea
+  attributes:
+    label: Additional Context
+    description: Add any other context about the problem here
