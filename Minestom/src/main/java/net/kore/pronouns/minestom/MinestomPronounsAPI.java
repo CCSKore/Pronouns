@@ -36,7 +36,7 @@ public class MinestomPronounsAPI extends PronounsAPI {
 
     @Override
     public String getPlayerName(UUID uuid) {
-        Player p = MinecraftServer.getConnectionManager().getPlayer(uuid);
+        Player p = MinecraftServer.getConnectionManager().getOnlinePlayerByUuid(uuid);
         return p == null ? null : p.getUsername();
     }
 }

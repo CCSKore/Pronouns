@@ -3,13 +3,31 @@ package net.kore.pronouns.meepling;
 import net.kore.meep.api.Meep;
 import net.kore.meep.api.player.Player;
 import net.kore.pronouns.api.PronounsAPI;
+import net.kore.pronouns.api.PronounsConfig;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
 
 public class MeeplingPronounsAPI extends PronounsAPI {
     private MeeplingPronounsAPI() {
-        //TODO: Implement a schedular in Meep
+        MeeplingPronouns.thisIsAThread = new Thread(null, () -> { //No Scedular means THREADING
+            while (true) {
+                List<UUID> uuids = new ArrayList<>();
+                for (Player player : Collections.unmodifiableList(Meep.get().getOnlinePlayers())) {
+                    uuids.add(player.getUUID());
+                }
+                massCacheValues(uuids);
+
+                try {
+                    Thread.sleep(PronounsConfig.get().node("refresh").getLong(5) * 60 * 1000);
+                } catch (InterruptedException ignored) {}
+            }
+        }, "PronounsDaemonThread", 0);
+        MeeplingPronouns.thisIsAThread.setDaemon(true);
+        MeeplingPronouns.thisIsAThread.start();
     }
 
     private static MeeplingPronounsAPI INSTANCE;

@@ -15,4 +15,5 @@ dependencies {
     implementation project(":API")
     compileOnly "net.kyori:adventure-api:4.16.0" // Meep issue, Adventure needs to be compileOnly in the plugin for some reason
     implementation "net.kyori:adventure-text-serializer-plain:4.16.0" // Also this needs adding to Meep
+    implementation "org.spongepowered:configurate-hocon:4.1.2"
 }
