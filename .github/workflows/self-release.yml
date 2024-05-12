@@ -36,8 +36,11 @@ jobs:
     - name: Make gradlew executible
       run: chmod +x gradlew
 
+    - name: Make build executible
+      run: chmod +x build
+
     - name: Build Modules
-      run: ./gradlew API:shadowJar Paper:shadowJar Sponge:shadowJar Fabric:build Velocity:shadowJar Bungee:shadowJar Minestom:shadowJar NeoForge:shadowJar
+      run: ./build
 
     - uses: "marvinpinto/action-automatic-releases@latest"
       name: Create Release
