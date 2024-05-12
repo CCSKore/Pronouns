@@ -1,5 +1,5 @@
-name: Bug report
-description: Create a report to help us improve
+name: Bug Report
+description: Found a bug? This is the one to pick then
 assignees: "Novampr"
 labels: "bug"
 body:
