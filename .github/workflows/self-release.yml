@@ -42,6 +42,9 @@ jobs:
     - name: Build Modules
       run: ./build
 
+    - name: Give them all a DEV name
+      run: 'for file in *.jar; do mv "$file" "DEV_$file"; done'
+
     - uses: "marvinpinto/action-automatic-releases@latest"
       name: Create Specific Release
       with:
